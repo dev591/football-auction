@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const location = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
