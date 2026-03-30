@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { io } from 'socket.io-client'
 import { motion, AnimatePresence } from 'framer-motion'
 import Navbar from '../components/Navbar'
+import { apiFetch } from '../utils/authFetch'
 
 export default function Bidder() {
   const [token,   setToken]   = useState(localStorage.getItem('striker_token') || '')
@@ -50,8 +51,8 @@ export default function Bidder() {
 
     const fetchAll = () => {
       Promise.all([
-        fetch('/api/players').then(r => r.json()),
-        fetch('/api/teams').then(r => r.json()),
+        apiFetch('/api/players').then(r => r.json()),
+        apiFetch('/api/teams').then(r => r.json()),
       ]).then(([pData, tData]) => {
         if (!active) return
         const pArray = Array.isArray(pData) ? pData : (pData.players || pData.data || [])
@@ -75,7 +76,7 @@ export default function Bidder() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const resp = await fetch('/api/teams/login', {
+      const resp = await apiFetch('/api/teams/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ teamIdCode: teamId.trim(), password: teamPass }),

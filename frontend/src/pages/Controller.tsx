@@ -3,7 +3,7 @@ import { io } from 'socket.io-client'
 import Papa from 'papaparse'
 import * as XLSX from 'xlsx'
 import { motion, AnimatePresence } from 'framer-motion'
-import { authFetch } from '../utils/authFetch'
+import { authFetch, apiFetch } from '../utils/authFetch'
 import Navbar from '../components/Navbar'
 
 export default function Controller() {
@@ -92,8 +92,8 @@ export default function Controller() {
 
     const fetchAll = () => {
       Promise.all([
-        fetch('/api/players').then(r => r.json()),
-        fetch('/api/teams').then(r => r.json()),
+        apiFetch('/api/players').then(r => r.json()),
+        apiFetch('/api/teams').then(r => r.json()),
       ]).then(([pResp, tResp]) => {
         if (!active) return
         setPlayers(Array.isArray(pResp) ? pResp : (pResp.players || pResp.data || []))
@@ -110,7 +110,7 @@ export default function Controller() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const resp = await fetch('/api/auth/login', {
+      const resp = await apiFetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),

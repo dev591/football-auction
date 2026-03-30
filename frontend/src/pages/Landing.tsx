@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
+import { apiFetch } from '../utils/authFetch'
+
 export default function Landing() {
   const navigate   = useNavigate()
   const [tab, setTab] = useState<'controller' | 'team'>('team')
@@ -21,7 +23,7 @@ export default function Landing() {
     e.preventDefault()
     setCtrlError(''); setCtrlLoading(true)
     try {
-      const resp = await fetch('/api/auth/login', {
+      const resp = await apiFetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: ctrlPass }),
@@ -38,7 +40,7 @@ export default function Landing() {
     e.preventDefault()
     setTeamError(''); setTeamLoading(true)
     try {
-      const resp = await fetch('/api/teams/login', {
+      const resp = await apiFetch('/api/teams/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ teamIdCode: teamId.trim(), password: teamPass }),
