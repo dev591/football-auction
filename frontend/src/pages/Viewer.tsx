@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 import { motion, AnimatePresence } from 'framer-motion'
 import { apiFetch } from '../utils/authFetch'
 
@@ -10,12 +10,13 @@ export default function Viewer() {
   const [soldData,     setSoldData]     = useState<any>(null)
 
   useEffect(() => {
-    const s = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001')
-    s.emit('auction:request_state')
+    let socket: Socket | null = null
+    socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001')
+    socket.emit('auction:request_state')
 
-    s.on('auction:state', (st) => setAuctionState(st))
-    s.on('auction:bid', () => {})
-    s.on('auction:sold', (data) => { setSoldData(data); setTimeout(() => setSoldData(null), 4000) })
+    socket.on('auction:state', (st: any) => setAuctionState(st))
+    socket.on('auction:bid', () => {})
+    socket.on('auction:sold', (data: any) => { setSoldData(data); setTimeout(() => setSoldData(null), 4000) })
 
     const applyFullState = (fs: any) => {
       if (!fs) return
@@ -24,8 +25,8 @@ export default function Viewer() {
       if (fs.players) setPlayers(fs.players)
     }
 
-    s.on('teams:updated',   (p) => p?.fullState && applyFullState(p.fullState))
-    s.on('players:updated', (p) => p?.fullState && applyFullState(p.fullState))
+    socket.on('teams:updated',   (p: any) => p?.fullState && applyFullState(p.fullState))
+    socket.on('players:updated', (p: any) => p?.fullState && applyFullState(p.fullState))
 
     Promise.all([
       apiFetch('/api/players').then(r => r.json()),
@@ -36,8 +37,8 @@ export default function Viewer() {
     })
 
     return () => {
-      s.disconnect();
-    };
+      if (socket) socket.disconnect()
+    }
   }, [])
 
   const currentPlayer = auctionState?.currentPlayer
