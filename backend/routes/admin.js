@@ -197,7 +197,7 @@ function createAdminRouter(io) {
       return res.status(400).json({ error: 'teams array is required' })
     }
 
-    const budgetAmount = parseInt(budget, 10) || 100000000 // default 10Cr
+    const budgetAmount = parseInt(budget, 10) || 350000000 // default 35Cr
 
     // Generate a simple 6-char password: 3 letters + 3 digits
     const genPassword = () => {

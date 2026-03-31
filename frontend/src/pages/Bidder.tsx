@@ -98,41 +98,41 @@ export default function Bidder() {
   /* ── LOGIN SCREEN ── */
   if (!token || !teamObj) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 pitch-texture-dark"
-        style={{ background: 'var(--bg-pitch)' }}>
-        <div className="noise-overlay" />
-        <Navbar />
-        <div className="fixed inset-0 pointer-events-none z-10">
-          <div className="visor-corner visor-tl" /><div className="visor-corner visor-tr" />
-          <div className="visor-corner visor-bl" /><div className="visor-corner visor-br" />
+      <div className="min-h-screen flex items-center justify-center p-6 bg-[#020804] text-white">
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(0,255,102,0.1)_0%,_transparent_50%)]" />
+          <div className="pitch-texture-dark absolute inset-0 opacity-40 mix-blend-overlay" />
           <div className="scan-line" />
         </div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-sm relative z-20"
-          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(0,255,135,0.15)', padding: '48px 40px' }}>
-          <div className="text-center mb-10">
-            <div className="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center text-3xl"
-              style={{ background: 'rgba(0,179,65,0.15)', border: '1px solid rgba(0,179,65,0.3)' }}>
-              🛡️
-            </div>
-            <h2 className="font-headline text-4xl tracking-widest text-white mb-1">WAR ROOM</h2>
-            <p className="font-mono text-[9px] tracking-[0.3em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
-              Secure Team Login
+        <div className="noise-overlay" />
+        <Navbar />
+        <div className="fixed inset-0 pointer-events-none z-50">
+          <div className="visor-corner visor-tl" /><div className="visor-corner visor-tr" />
+          <div className="visor-corner visor-bl" /><div className="visor-corner visor-br" />
+        </div>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md relative z-20 bg-[#010302]/90 backdrop-blur-2xl rounded-bl-3xl rounded-tr-3xl h-full shadow-[0_0_80px_rgba(0,0,0,0.8)] border border-[rgba(0,255,102,0.1)] p-10 group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-[#00ff66] via-transparent to-[#00ffcc] opacity-0 group-hover:opacity-30 transition-opacity duration-700 rounded-bl-3xl rounded-tr-3xl pointer-events-none" />
+          <div className="text-center mb-10 relative z-10">
+            <h2 className="font-headline text-4xl tracking-widest text-[#00ff66] mb-1">WAR ROOM</h2>
+            <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[rgba(255,255,255,0.4)]">
+              Secure Auth Required
             </p>
           </div>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="font-mono text-[9px] tracking-widest uppercase block mb-2" style={{ color: 'rgba(255,255,255,0.3)' }}>Team ID</label>
-              <input type="text" placeholder="e.g. TMA3K9" className="input-dark uppercase"
+          <form onSubmit={handleLogin} className="space-y-6 relative z-10">
+            <div className="relative group/input">
+              <label className="font-mono text-[9px] tracking-widest uppercase block mb-2 text-[#a3e6b7]">Organization ID</label>
+              <input type="text" placeholder="TMA3K9" className="w-full bg-[rgba(255,255,255,0.03)] border-b border-[rgba(0,255,102,0.3)] focus:border-[#00ff66] text-white font-mono text-sm px-4 py-3 outline-none uppercase transition-colors"
                 style={{ letterSpacing: '0.2em' }}
                 value={teamId} onChange={e => setTeamId(e.target.value.toUpperCase())} />
             </div>
-            <div>
-              <label className="font-mono text-[9px] tracking-widest uppercase block mb-2" style={{ color: 'rgba(255,255,255,0.3)' }}>Password</label>
-              <input type="password" placeholder="••••••••" className="input-dark"
+            <div className="relative group/input">
+              <label className="font-mono text-[9px] tracking-widest uppercase block mb-2 text-[#a3e6b7]">Security Passcode</label>
+              <input type="password" placeholder="••••••••" className="w-full bg-[rgba(255,255,255,0.03)] border-b border-[rgba(0,255,102,0.3)] focus:border-[#00ff66] text-white font-mono text-sm px-4 py-3 outline-none transition-colors"
                 value={teamPass} onChange={e => setTeamPass(e.target.value)} />
             </div>
-            <button type="submit" className="btn btn-primary w-full mt-2" style={{ padding: '14px', fontSize: '1rem' }}>
+            <button type="submit" className="btn btn-primary w-full mt-4 h-14 uppercase tracking-widest text-black bg-[#00ff66] hover:bg-white transition-all duration-300 font-bold hover:shadow-[0_0_30px_#00ff66]">
               Authorize Access
             </button>
           </form>
@@ -154,11 +154,12 @@ export default function Bidder() {
       <Navbar />
 
       {/* ── TOP BAR — Budget + Team ── */}
-      <div className="pt-16" style={{ background: 'var(--bg-pitch)', borderBottom: '1px solid rgba(0,179,65,0.15)' }}>
-        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+      <div className="pt-20 relative z-40 border-b border-[rgba(0,255,102,0.2)] bg-[#010302]/90 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
+        <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#00ff66] to-transparent opacity-50" />
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full overflow-hidden border-2 flex items-center justify-center font-headline text-xl shrink-0"
-              style={{ borderColor: 'var(--electric)', background: 'rgba(0,255,135,0.08)', color: 'var(--electric)' }}>
+            <div className="w-14 h-14 rounded-full overflow-hidden border-2 flex items-center justify-center font-headline text-2xl shrink-0 shadow-[0_0_20px_rgba(0,255,102,0.3)]"
+              style={{ borderColor: 'var(--pitch)', background: 'rgba(0,255,102,0.08)', color: 'var(--pitch)' }}>
               {teamObj.logo_url ? <img src={teamObj.logo_url} alt="" className="w-full h-full object-cover" /> : '🛡️'}
             </div>
             <div>
@@ -173,11 +174,11 @@ export default function Bidder() {
           </div>
 
           <div className="flex items-center gap-8">
-            <div className="text-center">
-              <div className="font-mono text-[9px] tracking-widest uppercase mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                Budget Remaining
+            <div className="text-center group">
+              <div className="font-mono text-[9px] tracking-[0.3em] uppercase mb-1 text-[#a3e6b7] opacity-60">
+                Reserves
               </div>
-              <div className="font-headline text-3xl" style={{ color: 'var(--gold)' }}>
+              <div className="font-headline text-4xl text-transparent bg-clip-text bg-gradient-to-b from-[#ffcc00] to-[#cc9900] drop-shadow-[0_0_15px_rgba(255,204,0,0.4)]">
                 ₹{((teamObj.budget_remaining || 0) / 10000000).toFixed(2)}Cr
               </div>
             </div>
@@ -221,10 +222,9 @@ export default function Bidder() {
           <div className={`flex-1 ${activeTab !== 'live' ? 'hidden lg:flex' : 'flex'} flex-col gap-5`}>
 
             {/* Current bid banner */}
-            <div className="relative overflow-hidden"
-              style={{ background: 'var(--bg-pitch)', border: '1px solid rgba(0,255,135,0.15)', padding: '24px 28px' }}>
-              <div className="absolute top-0 inset-x-0 h-px"
-                style={{ background: 'linear-gradient(90deg, transparent, var(--electric), transparent)' }} />
+            <div className="relative overflow-hidden rounded-xl border border-[rgba(0,255,102,0.3)] bg-[#020804]/80 backdrop-blur-md p-6 lg:p-8 shadow-[0_0_40px_rgba(0,255,102,0.05)] group">
+              <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#00ff66] to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute bottom-0 inset-x-0 h-[2px] bg-[#00ffcc] opacity-0 group-hover:opacity-20 transition-opacity blur-[2px]" />
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
@@ -254,8 +254,8 @@ export default function Bidder() {
             </div>
 
             {/* Player card */}
-            <div className="flex-1 relative overflow-hidden"
-              style={{ background: 'var(--bg-pitch)', border: '1px solid rgba(255,255,255,0.06)', minHeight: 400 }}>
+            <div className="flex-1 relative overflow-hidden rounded-xl border border-[rgba(0,255,102,0.1)] shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]"
+              style={{ background: '#010302', minHeight: 400 }}>
               <AnimatePresence mode="wait">
 
                 {/* WAITING */}
@@ -322,9 +322,9 @@ export default function Bidder() {
                       <div className="absolute inset-0 pitch-texture-dark opacity-40" />
                       <div className="relative z-10 flex flex-col items-center text-center">
                         <div className="relative mb-6">
-                          <div className="w-36 h-36 rounded-full overflow-hidden border-4 flex items-center justify-center font-headline text-5xl"
-                            style={{ borderColor: 'var(--electric)', background: 'rgba(0,255,135,0.05)', color: 'var(--electric)',
-                              boxShadow: '0 0 40px rgba(0,255,135,0.2)' }}>
+                          <div className="w-40 h-40 rounded-full overflow-hidden border-[4px] flex items-center justify-center font-headline text-5xl relative z-10"
+                            style={{ borderColor: '#00ff66', background: 'rgba(0,255,102,0.05)', color: '#00ff66',
+                              boxShadow: '0 0 60px rgba(0,255,102,0.4), inset 0 0 30px rgba(0,255,102,0.2)' }}>
                             {currentPlayer.image_url
                               ? <img src={currentPlayer.image_url} alt="" className="w-full h-full object-cover" />
                               : (currentPlayer.position || 'P')[0]
@@ -357,11 +357,10 @@ export default function Bidder() {
                     </div>
 
                     {/* Bid info panel */}
-                    <div className="w-full md:w-72 flex flex-col p-6 gap-4"
-                      style={{ borderLeft: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.3)' }}>
+                    <div className="w-full md:w-72 flex flex-col p-6 gap-4 border-t md:border-t-0 md:border-l border-[rgba(0,255,102,0.15)]"
+                      style={{ background: 'linear-gradient(90deg, #010302, #020804)' }}>
                       {/* Current bid */}
-                      <div className="p-5 relative overflow-hidden"
-                        style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)' }}>
+                      <div className="p-5 relative overflow-hidden rounded-lg border border-[rgba(255,204,0,0.3)] bg-[rgba(255,204,0,0.02)] shadow-[0_0_30px_rgba(255,204,0,0.1)]">
                         <div className="absolute top-0 inset-x-0 h-px"
                           style={{ background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
                         <div className="font-mono text-[9px] tracking-widest uppercase mb-2" style={{ color: 'rgba(245,158,11,0.6)' }}>

@@ -26,11 +26,11 @@ function createPlayersRouter(io) {
     try {
       const { name, position, college, base_price } = req.body;
 
-      if (!name || !position || !college || !base_price) {
+      if (!name || !position || !college) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      const numericPrice = typeof base_price === 'string' ? parseInt(base_price, 10) : base_price;
+      const numericPrice = base_price ? (typeof base_price === 'string' ? parseInt(base_price, 10) : base_price) : 1000000;
       const actualPrice = numericPrice < 100000 ? numericPrice * 100000 : numericPrice;
 
       const { data: insertData, error: insertError } = await supabase
@@ -118,7 +118,7 @@ function createPlayersRouter(io) {
           name,
           position,
           college,
-          base_price: 500000,
+          base_price: 1000000,  // 10L
           status:     'unsold',
           image_url,
         }      }).filter(p => p.name);

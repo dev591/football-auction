@@ -44,7 +44,7 @@ export default function Controller() {
 
   // Bulk team creation
   const [bulkTeamNames,      setBulkTeamNames]      = useState('')
-  const [bulkBudget,         setBulkBudget]         = useState('100000000')
+  const [bulkBudget,         setBulkBudget]         = useState('350000000')
   const [bulkCreating,       setBulkCreating]       = useState(false)
   const [createdCredentials, setCreatedCredentials] = useState<any[]>([])
   const [viewingCreds,       setViewingCreds]       = useState<any | null>(null) // single team creds modal
@@ -258,38 +258,38 @@ export default function Controller() {
   /* ── LOGIN GATE ── */
   if (!token) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 pitch-texture-dark"
-        style={{ background: 'var(--bg-pitch)' }}>
-        <div className="noise-overlay" />
-        <Navbar />
-        {/* Visor corners */}
-        <div className="fixed inset-0 pointer-events-none z-10">
-          <div className="visor-corner visor-tl" /><div className="visor-corner visor-tr" />
-          <div className="visor-corner visor-bl" /><div className="visor-corner visor-br" />
+      <div className="min-h-screen flex items-center justify-center p-6 bg-[#020804] text-white">
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(0,255,204,0.1)_0%,_transparent_50%)]" />
+          <div className="pitch-texture-dark absolute inset-0 opacity-40 mix-blend-overlay" />
           <div className="scan-line" />
         </div>
+        <div className="noise-overlay" />
+        <Navbar />
+        <div className="fixed inset-0 pointer-events-none z-50">
+          <div className="visor-corner visor-tl" /><div className="visor-corner visor-tr" />
+          <div className="visor-corner visor-bl" /><div className="visor-corner visor-br" />
+        </div>
         <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-sm relative z-20"
-          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(0,255,135,0.15)', padding: '48px 40px' }}
+          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md relative z-20 bg-[#010302]/90 backdrop-blur-2xl rounded-bl-3xl rounded-tr-3xl h-full shadow-[0_0_80px_rgba(0,0,0,0.8)] border border-[rgba(0,255,204,0.1)] p-10 group"
         >
-          <div className="text-center mb-10">
-            <div className="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center text-3xl"
-              style={{ background: 'rgba(0,179,65,0.15)', border: '1px solid rgba(0,179,65,0.3)' }}>
-              🔑
-            </div>
-            <h2 className="font-headline text-4xl tracking-widest text-white mb-1">MISSION CONTROL</h2>
-            <p className="font-mono text-[9px] tracking-[0.3em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
-              RESTRICTED ADMIN ACCESS
+          <div className="absolute inset-0 bg-gradient-to-br from-[#00ffcc] via-transparent to-[#0066ff] opacity-0 group-hover:opacity-30 transition-opacity duration-700 rounded-bl-3xl rounded-tr-3xl pointer-events-none" />
+          <div className="text-center mb-10 relative z-10">
+            <h2 className="font-headline text-4xl tracking-widest text-[#00ffcc] mb-1">MISSION CONTROL</h2>
+            <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[rgba(255,255,255,0.4)]">
+              Restricted Admin Access
             </p>
           </div>
-          <form onSubmit={handleLogin} className="space-y-5">
-            <input
-              type="password" placeholder="Authorization Key"
-              className="input-dark" value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-            <button type="submit" className="btn btn-primary w-full" style={{ fontSize: '1rem', padding: '14px' }}>
+          <form onSubmit={handleLogin} className="space-y-6 relative z-10">
+            <div className="relative group/input">
+              <input
+                type="password" placeholder="Authorization Key"
+                className="w-full bg-[rgba(255,255,255,0.03)] border-b border-[rgba(0,255,204,0.3)] focus:border-[#00ffcc] text-white font-mono text-sm px-4 py-3 outline-none transition-colors" value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="btn w-full mt-4 h-14 uppercase tracking-widest text-black bg-[#00ffcc] hover:bg-white transition-all duration-300 font-bold hover:shadow-[0_0_30px_#00ffcc]">
               ENGAGE SYSTEM
             </button>
           </form>
@@ -377,28 +377,28 @@ export default function Controller() {
                 </div>
 
                 {/* Current player card */}
-                <div className="card-live relative overflow-hidden" style={{ padding: '32px' }}>
-                  <div className="absolute top-0 inset-x-0 h-px"
-                    style={{ background: 'linear-gradient(90deg, transparent, var(--electric), transparent)' }} />
+                <div className="relative overflow-hidden rounded-xl border border-[rgba(0,255,204,0.3)] bg-[#020804]/80 backdrop-blur-md p-8 shadow-[0_0_60px_rgba(0,255,204,0.1)] group">
+                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#00ffcc] to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute bottom-0 inset-x-0 h-[3px] bg-[#00ffcc] opacity-0 group-hover:opacity-30 transition-opacity blur-[4px]" />
                   <div className="flex items-center gap-3 mb-6">
-                    {currentStatus === 'live' && <span className="live-dot" />}
-                    <span className="label-dim">Current Target</span>
+                    {currentStatus === 'live' && <span className="live-dot" style={{ background: '#00ffcc', boxShadow: '0 0 10px #00ffcc' }} />}
+                    <span className="label-dim text-[#00ffcc]">Current Target</span>
                     <span className="font-mono text-[9px] ml-auto" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                      SESSION: AFC-2025
+                      SESSION: AFC-2026
                     </span>
                   </div>
 
                   {currentPlayer ? (
-                    <div className="flex flex-col md:flex-row items-center gap-8">
-                      <div className="w-32 h-32 rounded-full overflow-hidden border-2 shrink-0 flex items-center justify-center font-headline text-4xl"
-                        style={{ borderColor: 'var(--electric)', background: 'rgba(0,255,135,0.05)', color: 'var(--electric)' }}>
+                    <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
+                      <div className="w-36 h-36 rounded-full overflow-hidden border-[4px] shrink-0 flex items-center justify-center font-headline text-5xl bg-[#010302]"
+                        style={{ borderColor: '#00ffcc', color: '#00ffcc', boxShadow: '0 0 60px rgba(0,255,204,0.4), inset 0 0 30px rgba(0,255,204,0.2)' }}>
                         {currentPlayer.image_url
                           ? <img src={currentPlayer.image_url} alt="" className="w-full h-full object-cover" />
                           : (currentPlayer.position || 'P')[0]
                         }
                       </div>
                       <div className="flex-1 text-center md:text-left">
-                        <h2 className="font-headline text-5xl text-white mb-1 tracking-wide">{currentPlayer.name}</h2>
+                        <h2 className="font-headline text-5xl md:text-6xl text-white mb-1 tracking-wide">{currentPlayer.name}</h2>
                         <p className="font-mono text-[10px] mb-6" style={{ color: 'rgba(255,255,255,0.4)' }}>
                           {currentPlayer.position} · {currentPlayer.college}
                         </p>

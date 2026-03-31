@@ -8,49 +8,51 @@
    DESIGN TOKENS
 ═══════════════════════════════════════════════ */
 :root {
-  /* Core */
-  --pitch:       #00b341;
-  --pitch-dark:  #008f33;
-  --pitch-light: #00e054;
-  --electric:    #00ff87;
+  /* Core High-Octane Colors */
+  --pitch:       #00ff66; /* Vibrant Neon Green */
+  --pitch-dark:  #00cc52;
+  --pitch-light: #66ff99;
+  --electric:    #00ffcc; /* Cyber Cyan */
   --white:       #ffffff;
-  --off-white:   #f4f7f4;
-  --gold:        #f59e0b;
-  --gold-dark:   #d97706;
-  --red:         #ef4444;
+  --off-white:   #f0fdf4;
+  --gold:        #ffcc00; /* Neon Gold */
+  --gold-dark:   #ccxa00;
+  --red:         #ff3366; /* Alert Red/Pink */
+  --hyper-blue:  #0066ff;
 
-  /* Surfaces */
-  --bg-light:    #f4f7f4;
-  --bg-dark:     #071a0e;
-  --bg-pitch:    #0a1f10;
-  --card-white:  #ffffff;
-  --card-dark:   rgba(255,255,255,0.04);
+  /* Deep Abyss Surfaces */
+  --bg-light:    #030905; /* Actually deeply dark */
+  --bg-dark:     #010302;
+  --bg-pitch:    #020804;
+  --card-white:  rgba(255,255,255,0.02);
+  --card-dark:   rgba(255,255,255,0.03);
 
-  /* Text */
-  --text-dark:   #0a1a0f;
-  --text-mid:    #3d5c45;
-  --text-muted:  #7a9a82;
+  /* Text - Flipped for Dark Mode globally */
+  --text-dark:   #f0fdf4; /* Now light text */
+  --text-mid:    #a3e6b7;
+  --text-muted:  #4d9966;
   --text-white:  #ffffff;
   --text-dim:    rgba(255,255,255,0.5);
 
-  /* Borders */
-  --border-light: rgba(0,179,65,0.15);
-  --border-dark:  rgba(255,255,255,0.08);
-  --border-green: rgba(0,179,65,0.4);
+  /* Neon Borders */
+  --border-light: rgba(0,255,102,0.15);
+  --border-dark:  rgba(0,255,204,0.1);
+  --border-green: rgba(0,255,102,0.5);
 
-  /* Glows */
-  --glow-green:  rgba(0,179,65,0.25);
-  --glow-gold:   rgba(245,158,11,0.3);
-  --glow-white:  rgba(255,255,255,0.15);
+  /* Intense Glows */
+  --glow-green:  rgba(0,255,102,0.35);
+  --glow-gold:   rgba(255,204,0,0.4);
+  --glow-white:  rgba(255,255,255,0.2);
+  --glow-cyan:   rgba(0,255,204,0.3);
 }
 
 /* ═══════════════════════════════════════════════
    RESET
 ═══════════════════════════════════════════════ */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; } /* Lenis will handle smooth scrolling */
 body {
-  background: var(--bg-light);
+  background: var(--bg-dark);
   color: var(--text-dark);
   font-family: 'Outfit', sans-serif;
   overflow-x: hidden;
