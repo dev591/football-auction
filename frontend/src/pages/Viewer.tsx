@@ -35,7 +35,7 @@ export default function Viewer() {
       setTeams(Array.isArray(t) ? t : (t.teams || []))
     })
 
-    return () => s.disconnect()
+    return () => { s.disconnect() }
   }, [])
 
   const currentPlayer = auctionState?.currentPlayer
