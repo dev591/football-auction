@@ -7,7 +7,14 @@ import { authFetch, apiFetch } from '../utils/authFetch'
 import Navbar from '../components/Navbar'
 
 export default function Controller() {
-  const [token, setToken]       = useState(localStorage.getItem('striker_token') || '')
+  const [token, setToken] = useState(() => {
+    try {
+      const t = localStorage.getItem('striker_token')
+      if (!t) return ''
+      const payload = JSON.parse(atob(t.split('.')[1]))
+      return payload.role === 'admin' ? t : ''
+    } catch { return '' }
+  })
   const [password, setPassword] = useState('')
   const [activeTab, setActiveTab] = useState('auction')
   const [resetConfirm, setResetConfirm] = useState('')  // for nuclear confirm input

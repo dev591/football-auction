@@ -53,14 +53,6 @@ export default function Navbar() {
           >
             War Room
           </Link>
-          <Link
-            to="/controller"
-            data-cursor
-            className="btn btn-primary"
-            style={{ padding: '8px 20px', fontSize: '0.8rem' }}
-          >
-            Control Center
-          </Link>
         </div>
       </div>
     </nav>
