@@ -38,10 +38,13 @@ export default function Controller() {
 
   const [importData, setImportData] = useState<any[]>([])
   const [importing,  setImporting]  = useState(false)
+  const [manualPlayerName,    setManualPlayerName]    = useState('')
+  const [manualPlayerPos,     setManualPlayerPos]     = useState('')
+  const [manualPlayerCollege, setManualPlayerCollege] = useState('')
 
   // Bulk team creation
   const [bulkTeamNames,      setBulkTeamNames]      = useState('')
-  const [bulkBudget,         setBulkBudget]         = useState('10000000')
+  const [bulkBudget,         setBulkBudget]         = useState('100000000')
   const [bulkCreating,       setBulkCreating]       = useState(false)
   const [createdCredentials, setCreatedCredentials] = useState<any[]>([])
   const [viewingCreds,       setViewingCreds]       = useState<any | null>(null) // single team creds modal
@@ -184,6 +187,8 @@ export default function Controller() {
       // Convert Google Drive share link to thumbnail URL (works in img tags)
       const convertDriveUrl = (url: string) => {
         if (!url) return ''
+        // Already a direct URL (not Drive)
+        if (!url.includes('drive.google.com')) return url
         const match = url.match(/(?:id=|\/d\/)([a-zA-Z0-9_-]{10,})/)
         if (match) return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w400`
         return url
@@ -601,7 +606,31 @@ export default function Controller() {
             >
               {/* Import panel */}
               <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', padding: '28px' }}>
-                <div className="label-dim mb-6">Import Data</div>
+                <div className="label-dim mb-4">Add Single Player</div>
+                <div className="space-y-3 mb-6">
+                  <input type="text" placeholder="Player Name" className="input-dark w-full"
+                    value={manualPlayerName} onChange={e => setManualPlayerName(e.target.value)} />
+                  <select className="input-dark w-full" value={manualPlayerPos} onChange={e => setManualPlayerPos(e.target.value)}>
+                    <option value="">Position</option>
+                    {['Forward','Midfielder','Defender','Goalkeeper'].map(p => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                  <input type="text" placeholder="School / College" className="input-dark w-full"
+                    value={manualPlayerCollege} onChange={e => setManualPlayerCollege(e.target.value)} />
+                  <button
+                    onClick={async () => {
+                      if (!manualPlayerName || !manualPlayerPos) return alert('Name and position required')
+                      const ok = await adminAction('POST', '/api/players/add', {
+                        name: manualPlayerName, position: manualPlayerPos,
+                        college: manualPlayerCollege || 'N/A', base_price: 500000
+                      })
+                      if (ok) { setManualPlayerName(''); setManualPlayerPos(''); setManualPlayerCollege(''); showToast(`✓ ${manualPlayerName} added`) }
+                    }}
+                    className="btn btn-primary w-full" style={{ padding: '11px', fontSize: '0.8rem' }}>
+                    Add Player
+                  </button>
+                </div>
+
+                <div className="label-dim mb-4">Import Data</div>
                 <div className="relative group mb-4">
                   <input type="file" accept=".csv,.xlsx" onChange={handleFileChange}
                     className="absolute inset-0 opacity-0 cursor-pointer z-10" />
@@ -879,6 +908,17 @@ export default function Controller() {
                             style={{ background: 'rgba(0,179,65,0.1)', color: 'var(--electric)', border: '1px solid rgba(0,179,65,0.2)' }}
                             title="View credentials"
                           >🔑</button>
+                          <button
+                            title="Assign Captain (deducts ₹10Cr)"
+                            onClick={async () => {
+                              if (!confirm(`Assign captain to ${t.name}? This deducts ₹10Cr from their budget.`)) return
+                              const ok = await adminAction('POST', '/api/admin/assign-captain', { teamId: t.id || t._id })
+                              if (ok) showToast(`✓ Captain assigned to ${t.name}`)
+                            }}
+                            className="font-mono text-[8px] px-2 py-1"
+                            style={{ background: 'rgba(245,158,11,0.1)', color: 'var(--gold)', border: '1px solid rgba(245,158,11,0.2)' }}>
+                            👑
+                          </button>
                           <button onClick={() => handleDeleteTeam(t.id || t._id)}
                             className="font-mono text-xs"
                             style={{ color: 'rgba(239,68,68,0.5)' }}>✕</button>

@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-
 import { apiFetch } from '../utils/authFetch'
 
 export default function Landing() {
   const navigate   = useNavigate()
-  const [tab, setTab] = useState<'controller' | 'team'>('team')
+  const [tab, setTab] = useState<'controller' | 'team' | 'watch'>('team')
 
   // Controller login
   const [ctrlPass,  setCtrlPass]  = useState('')
@@ -112,7 +111,7 @@ export default function Landing() {
       >
         {/* Tab switcher */}
         <div className="flex" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          {(['team', 'controller'] as const).map(t => (
+          {(['team', 'controller', 'watch'] as const).map(t => (
             <button key={t} onClick={() => { setTab(t); setCtrlError(''); setTeamError('') }}
               className="flex-1 py-4 font-mono text-[10px] tracking-[0.25em] uppercase transition-all"
               style={{
@@ -120,7 +119,7 @@ export default function Landing() {
                 color: tab === t ? 'var(--electric)' : 'rgba(255,255,255,0.3)',
                 borderBottom: tab === t ? '2px solid var(--electric)' : '2px solid transparent',
               }}>
-              {t === 'team' ? '🛡️ Team Login' : '🔑 Controller'}
+              {t === 'team' ? '🛡️ Team' : t === 'controller' ? '🔑 Admin' : '👁️ Watch'}
             </button>
           ))}
         </div>
@@ -178,8 +177,7 @@ export default function Landing() {
             )}
 
             {/* CONTROLLER LOGIN */}
-            {tab === 'controller' && (
-              <motion.div key="controller"
+            {tab === 'controller' && (              <motion.div key="controller"
                 initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.2 }}>
                 <div className="text-center mb-7">
@@ -212,6 +210,33 @@ export default function Landing() {
                     {ctrlLoading ? 'Authenticating...' : 'Engage System'}
                   </button>
                 </form>
+              </motion.div>
+            )}
+
+            {/* WATCH TAB */}
+            {tab === 'watch' && (
+              <motion.div key="watch"
+                initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.2 }}>
+                <div className="text-center mb-7">
+                  <h2 className="font-headline text-3xl tracking-widest text-white mb-1">Watch Live</h2>
+                  <p className="font-mono text-[9px] tracking-widest uppercase mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                    No login required
+                  </p>
+                </div>
+                <div className="text-center py-6 mb-4"
+                  style={{ background: 'rgba(0,179,65,0.06)', border: '1px solid rgba(0,179,65,0.15)' }}>
+                  <div className="text-4xl mb-3">👁️</div>
+                  <p className="font-mono text-[10px] tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                    View the live auction in real time.<br />No account needed.
+                  </p>
+                </div>
+                <button
+                  onClick={() => navigate('/watch')}
+                  className="btn btn-primary w-full"
+                  style={{ padding: '14px', fontSize: '1rem' }}>
+                  Enter Live View
+                </button>
               </motion.div>
             )}
 

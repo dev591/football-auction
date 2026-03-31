@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Landing from './pages/Landing'
 import Controller from './pages/Controller'
 import Bidder from './pages/Bidder'
+import Viewer from './pages/Viewer'
 import Cursor from './components/Cursor'
 import ScrollIcon from './components/ScrollIcon'
 
@@ -39,7 +40,7 @@ export default function App() {
           </AdminRoute>
         } />
         <Route path="/bidder" element={<Bidder />} />
-        <Route path="/watch" element={<Bidder />} />
+        <Route path="/watch" element={<Viewer />} />
       </Routes>
     </BrowserRouter>
   )

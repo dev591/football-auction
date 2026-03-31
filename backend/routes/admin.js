@@ -197,7 +197,7 @@ function createAdminRouter(io) {
       return res.status(400).json({ error: 'teams array is required' })
     }
 
-    const budgetAmount = parseInt(budget, 10) || 10000000 // default 10L
+    const budgetAmount = parseInt(budget, 10) || 100000000 // default 10Cr
 
     // Generate a simple 6-char password: 3 letters + 3 digits
     const genPassword = () => {
@@ -241,6 +241,28 @@ function createAdminRouter(io) {
       return res.json({ success: true, teams: inserted })
     } catch (err) {
       return res.status(500).json({ error: err.message || 'Failed to create teams' })
+    }
+  })
+
+  // Assign captain — deducts 10Cr from team budget
+  router.post('/assign-captain', async (req, res) => {
+    const { teamId } = req.body || {}
+    if (!teamId) return res.status(400).json({ error: 'teamId required' })
+    try {
+      const { data: team } = await supabase.from('teams').select('*').eq('id', parseInt(teamId, 10)).single()
+      if (!team) return res.status(404).json({ error: 'Team not found' })
+      const captainCost = 10000000 // 10Cr
+      if (team.budget_remaining < captainCost) {
+        return res.status(400).json({ error: `Insufficient budget (₹${(team.budget_remaining/100000).toFixed(1)}L remaining)` })
+      }
+      await supabase.from('teams').update({ budget_remaining: team.budget_remaining - captainCost }).eq('id', team.id)
+      await logEvent(io, 'captain', `Captain assigned to ${team.name} (₹10Cr deducted)`)
+      const fullState = await getFullState()
+      io.emit('auction:state', fullState)
+      io.emit('teams:updated', { teams: fullState.teams, fullState })
+      return res.json({ success: true })
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message })
     }
   })
 
